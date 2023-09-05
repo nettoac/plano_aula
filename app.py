@@ -3,10 +3,10 @@ from flask import Flask, render_template, request, redirect, url_for
 from datetime import datetime
 from sqlalchemy import asc
 
-
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///plano_aulas.db'
 db = SQLAlchemy(app)
+
 
 class PlanoAula(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -16,9 +16,11 @@ class PlanoAula(db.Model):
     duracao_aula = db.Column(db.Float, nullable=False)
     palavras_aprendidas = db.Column(db.Integer, nullable=False)
 
+
 # Criar o contexto da aplicação antes de criar o banco de dados
 with app.app_context():
     db.create_all()
+
 
 @app.route('/')
 def index():
