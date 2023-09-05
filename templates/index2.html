@@ -1,0 +1,841 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--   <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">-->
+<!--    <style>-->
+<!--        .timeline {-->
+<!--            display: flex;-->
+<!--            list-style: inside;-->
+<!--            padding: 0;-->
+<!--        }-->
+
+<!--        .timeline li {-->
+<!--            display: flex;-->
+<!--            flex-direction: column;-->
+<!--            margin-bottom: 20px;-->
+<!--            position: relative;-->
+<!--        }-->
+
+<!--        .timeline-badge {-->
+<!--            background-color: #f8f9fa;-->
+<!--            border: 2px solid #007bff;-->
+<!--            border-radius: 50%;-->
+<!--            color: #007bff;-->
+<!--            width: 40px;-->
+<!--            height: 40px;-->
+<!--            text-align: center;-->
+<!--            line-height: 36px;-->
+<!--            position: absolute;-->
+<!--            top: 0;-->
+<!--            left: 0;-->
+<!--            z-index: 1;-->
+<!--        }-->
+
+<!--        .timeline-panel {-->
+<!--            background-color: #f8f9fa;-->
+<!--            border: 1px solid #dee2e6;-->
+<!--            border-radius: 5px;-->
+<!--            padding: 20px;-->
+<!--            margin-left: 60px;-->
+<!--        }-->
+
+<!--        .timeline-title {-->
+<!--            font-weight: bold;-->
+<!--            margin-bottom: 5px;-->
+<!--        }-->
+
+<!--        .timeline-body {-->
+<!--            margin-bottom: 0;-->
+<!--        }-->
+<!--    </style>-->
+<!--    <title>Timeline</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--    <h1>Plano de Aulas</h1>-->
+<!--    <form method="POST" action="/adicionar_plano">-->
+<!--        <label for="nome_aluno">Nome do Aluno:</label>-->
+<!--        <input type="text" id="nome_aluno" name="nome_aluno" required><br><br>-->
+
+<!--        <label for="lingua_estudada">Língua Estudada:</label>-->
+<!--        <input type="text" id="lingua_estudada" name="lingua_estudada" required><br><br>-->
+
+<!--        <label for="data_aula">Data da Aula:</label>-->
+<!--        <input type="date" id="data_aula" name="data_aula" required><br><br>-->
+
+<!--        <label for="duracao_aula">Duração da Aula (em horas):</label>-->
+<!--        <input type="number" id="duracao_aula" name="duracao_aula" step="0.1" required><br><br>-->
+
+<!--        <label for="palavras_aprendidas">Palavras Aprendidas:</label>-->
+<!--        <input type="number" id="palavras_aprendidas" name="palavras_aprendidas" required><br><br>-->
+
+<!--        <button type="submit">Adicionar Plano</button>-->
+<!--    </form>-->
+
+<!--    <div class="container mt-5">-->
+<!--        <h2>Timeline</h2>-->
+<!--        <ul class="timeline">-->
+<!--            {% for plano in planos_aula %}-->
+<!--            <li>-->
+<!--                <div class="timeline-badge">{{ plano.data_aula }}</div>-->
+<!--                <div class="timeline-panel">-->
+<!--                    <div class="timeline-heading">-->
+<!--                        <h4 class="timeline-title">{{ plano.nome_aluno }}</h4>-->
+<!--                    </div>-->
+<!--                    <div class="timeline-body">-->
+<!--                        <p>{{ plano.lingua_estudada }}</p>-->
+<!--                        <p>{{ plano.duracao_aula }} horas - {{ plano.palavras_aprendidas }} palavras</p>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </li>-->
+<!--            {% endfor %}-->
+<!--        </ul>-->
+<!--    </div>-->
+<!--</body>-->
+<!--</html>-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet">
+    <style>:root {
+    --font-primary: sans-serif;
+    --font-secondary: serif;
+
+    /* set base values */
+    --text-base-size: 1.1em;
+    --text-scale-ratio: 1.25;
+
+    /* type scale */
+    --text-xs: calc(1.2em / (var(--text-scale-ratio) * var(--text-scale-ratio)));
+
+    --text-sm: calc(1em / var(--text-scale-ratio));
+
+    --text-md: calc(1em * var(--text-scale-ratio));
+
+    --text-lg: calc(1em * var(--text-scale-ratio) * var(--text-scale-ratio));
+
+    --text-llg: calc(1.2em * var(--text-scale-ratio) * var(--text-scale-ratio));
+
+    --text-xlg: calc(1.1em * var(--text-scale-ratio) * var(--text-scale-ratio));
+
+    --text-xl: calc(0.9em * var(--text-scale-ratio) * var(--text-scale-ratio) * var(--text-scale-ratio));
+
+    --text-xll: calc(1.4em * var(--text-scale-ratio) * var(--text-scale-ratio) * var(--text-scale-ratio));
+
+    --text-xxl: calc(1.5em * var(--text-scale-ratio) * var(--text-scale-ratio) * var(--text-scale-ratio) * var(--text-scale-ratio));
+
+    --text-xxxl: calc(1.5em * var(--text-scale-ratio) * var(--text-scale-ratio) * var(--text-scale-ratio) * var(--text-scale-ratio) * var(--text-scale-ratio));
+
+    --text-gg: calc(1.5em * var(--text-scale-ratio) * var(--text-scale-ratio) * var(--text-scale-ratio) * var(--text-scale-ratio) * var(--text-scale-ratio) * var(--text-scale-ratio));
+
+    --text-extragg: calc(1.8em * var(--text-scale-ratio) * var(--text-scale-ratio) * var(--text-scale-ratio) * var(--text-scale-ratio) * var(--text-scale-ratio) * var(--text-scale-ratio));
+
+    /* line-height */
+    --gsm-line-height: 1;
+    --sm-line-height: 1.1;
+    --md-line-height: 1.2;
+    --xl-line-height: 1.3;
+    --xxl-line-height: 1.4;
+    --body-line-height: 1.6;
+
+    --font-weight-extralight: 300;
+    --font-weight-light: 400;
+    --font-weight-normal: bold;
+    --font-weight-bold: 800;
+
+    /* Cores */
+    --primeira: #FF04FF;
+    --segunda: #6A2380;
+    --terceira: #523090;
+    --quarta: #9080FF;
+    --quinta: #e8e8e8;
+    --sexta: #ffffff;
+    --setima: #808080;
+    --oitava: #333333;
+}
+
+.timeline {
+  padding-top: 30px;
+  margin-bottom: 150px;
+}
+
+.timeline-background {
+  position: relative;
+  width: 100%;
+  height: 150px;
+  background-color: var(--quinta);
+  padding: 0;
+  padding-top: 50px;
+}
+
+@media (max-width: 1200px) {
+  .timeline {
+      padding-top: 30px;
+      margin-bottom: 10px;
+    }
+}
+
+@media (max-width: 700px) {
+  .timeline {
+      padding-top: 30px;
+      margin-bottom: 50px;
+    }
+}
+
+.backpage {
+  position: relative;
+  overflow: hidden;
+  width: 900px;
+  padding-top: 20px;
+  height: 400px;
+}
+
+@media (max-width: 1200px) {
+  .backpage {
+    position: relative;
+    overflow: hidden;
+    width: 750px;
+    height: 100px;
+  }
+}
+
+@media (max-width: 1000px) {
+  .backpage {
+    position: relative;
+    overflow: hidden;
+    width: 520px;
+    height: 100px;
+  }
+}
+
+@media (max-width: 450px) {
+  .backpage {
+    width: 300px;
+  }
+}
+
+#leftArrow{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(180deg);
+}
+
+#rightArrow{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.list-items {
+  position: absolute;
+  width: 1200px;
+  height: auto;
+  margin: 0;
+  padding: 0;
+  margin-top: 20px;
+  margin-left: -150px;
+}
+
+
+@media (max-width: 1000px) {
+  .list-items {
+    position: absolute;
+    width: 550px;
+    height: auto;
+    margin: 0;
+    padding: 0;
+    margin-top: 20px;
+    margin-left: -20px;
+  }
+}
+
+@media (max-width: 650px) {
+  .list-items {
+    position: absolute;
+    width: 450px;
+    height: auto;
+    margin: 0;
+    padding: 0;
+    margin-top: 20px;
+    margin-left: -20px;
+  }
+}
+
+.list-item {
+  position: absolute;
+  width: 1000px;
+  top: 0;
+  height: auto;
+  margin: 0;
+  padding: 0;
+}
+
+@media (max-width: 1200px) {
+  .list-item {
+    position: absolute;
+    width: 850px;
+    top: 0;
+    height: auto;
+    margin: 0;
+    padding: 0;
+  }
+}
+
+@media (max-width: 1000px) {
+  .list-item {
+    position: absolute;
+    width: 580px;
+    top: 0;
+    height: auto;
+    margin: 0;
+    padding: 0;
+  }
+}
+
+@media (max-width: 550px) {
+  .list-item {
+    position: absolute;
+    width: 300px;
+    top: 0;
+    height: auto;
+    margin: 0;
+    padding: 0;
+  }
+}
+
+.list-items li {
+  position: relative;
+}
+
+.list-item button:first-child {
+  position: absolute;
+  left: 20px;
+  top: 75px;
+  cursor: pointer;
+  list-style: none;
+  width: 50px;
+  height: 50px;
+  background-color: #fff;
+  border: 3px solid #AD80FF;
+  color: #D9D9D9;
+  border-radius: 50%;
+  float: left;
+}
+
+@media (max-width: 550px) {
+  .list-item button:first-child {
+    left: -20px;
+  }
+}
+
+.list-item button:last-child {
+  position: absolute;
+  right: 25px;
+  top: 75px;
+  cursor: pointer;
+  list-style: none;
+  width: 50px;
+  height: 50px;
+  margin-left: 50px;
+  background-color: #fff;
+  border: 3px solid #AD80FF;
+  color: #D9D9D9;
+  border-radius: 50%;
+  float: left;
+}
+
+@media (max-width: 550px) {
+  .list-item button:last-child {
+    right: -20px;
+  }
+}
+
+.list-item button:last-child:hover {
+  color: var(--primeira);
+}
+
+.list-item button:first-child:hover {
+  color: var(--primeira);
+}
+
+.list-item .active {
+}
+
+.list-items li {
+  cursor: pointer;
+  margin-left: 150px;
+  top: -1px;
+  list-style: none;
+  width: 20px;
+  height: 20px;
+  background-color: #fff;
+  border: 3px solid #D9D9D9;
+  margin-top: 0;
+  border-radius: 50%;
+  float: left;
+}
+
+@media (max-width: 1000px) {
+  .list-items li {
+    cursor: pointer;
+    margin-left: 50px;
+    list-style: none;
+    top: 2px;
+    width: 15px;
+    height: 15px;
+    background-color: #fff;
+    border: 3px solid #D9D9D9;
+    border-radius: 50%;
+    float: left;
+  }
+}
+
+.list-items li.active {
+  position: relative;
+  top: -5px;
+  cursor: pointer;
+  width: 30px;
+  height: 30px;
+  margin-left: 150px;
+  list-style: none;
+  border: 3px solid var(--primeira);
+  background-color: var(--primeira);
+  border-radius: 50%;
+  float: left;
+}
+
+.list-items li.active .timeline-legenda {
+  position: absolute;
+  width: 200px;
+  top: -25px;
+  left: -4px;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--primeira);
+}
+
+.list-items li.was .timeline-legenda {
+  position: absolute;
+  width: 200px;
+  top: -25px;
+  left: -4px;
+  font-size: 14px;
+  font-weight: 400;
+  color: #4D4D4D !important;
+}
+
+@media (max-width: 1000px) {
+  .list-items li.active {
+    cursor: pointer;
+    margin-left: 50px;
+    list-style: none;
+    border: 3px solid var(--primeira);
+    background-color: var(--primeira);
+    border-radius: 50%;
+    float: left;
+  }
+}
+
+.list-items li.active.was {
+  position: relative;
+  top: -1px !important;
+  cursor: pointer;
+  width: 20px !important;
+  height: 20px !important;
+  margin-left: 150px;
+  list-style: none;
+  border: 3px solid var(--primeira);
+  background-color: #fff !important;
+  border-radius: 50%;
+  float: left;
+}
+
+@media (max-width: 1000px) {
+    .list-items li.active.was {
+      position: relative;
+      top: -1px !important;
+      cursor: pointer;
+      width: 20px !important;
+      height: 20px !important;
+      margin-left: 50px;
+      list-style: none;
+      border: 3px solid var(--primeira);
+      background-color: #fff !important;
+      border-radius: 50%;
+      float: left;
+    }
+}
+
+.line-gray{
+    width: 100%;
+    height: 4px;
+    background: #D9D9D9;
+    position: absolute;
+    top: 7px;
+}
+
+.line-fill{
+    width: 220px;
+    height: 4px;
+    background: var(--primeira);
+    position: absolute;
+    top: 7px;
+}
+
+@media (max-width: 1000px) {
+  .line-fill{
+        width: 120px;
+        height: 4px;
+        background: var(--primeira);
+        position: absolute;
+        top: 7px;
+    }
+}
+
+.dots {
+  width: 100%;
+  position: relative;
+}
+
+.timeline-content {
+  position: relative;
+  width: 100%;
+  height: auto;
+  background-color: var(--quinta);
+  padding: 0;
+  padding-top: 0;
+  padding-bottom: 30px;
+  text-align: left;
+}
+
+.timeline-size {
+  position: absolute;
+  margin-top:0;
+  width: 50%;
+  opacity: 0;
+}
+
+//Seta animação de entrada do texto
+.timeline-size.on {
+  position: relative;
+  opacity: 1;
+  width: 40%;
+  display: block !important;
+  animation: in 0.75s;
+  -webkit-animation: in 0.75s;
+}
+
+@media (max-width: 1282px) {
+  .timeline-size {
+    position: absolute;
+    margin-top:0;
+    width: 70% !important;
+    opacity: 0;
+  }
+  .timeline-size.on {
+    width: 70%;
+    margin: 0 auto;
+    display: block !important;
+  }
+}
+
+@media (max-width: 800px) {
+  .timeline-size {
+    position: absolute;
+    margin-top:0;
+    width: 60% !important;
+    opacity: 0;
+  }
+  .timeline-size.on {
+    width: 60%;
+    margin: 0 auto;
+    display: block !important;
+  }
+}
+
+@media (max-width: 500px) {
+  .timeline-size {
+    position: absolute;
+    margin-top:0;
+    width: 70% !important;
+    opacity: 0;
+  }
+  .timeline-size.on {
+    width: 70%;
+    display: block !important;
+  }
+}
+
+//Seta animação de saida do texto
+.timeline-size.out {
+  margin-top:0;
+  width: 50%;
+  animation: out 0.75s;
+  -webkit-animation: out 0.75s;
+}
+
+.timeline-title {
+  font-size: 60px;
+  font-weight: 400;
+  line-height: 141px;
+  color: #52308A;
+  margin: 0;
+  padding: 0;
+}
+
+@media (max-width: 1500px) {
+  .timeline-title {
+    font-size: 40px;
+    font-weight: 400;
+    line-height: 40px;
+    color: #52308A;
+    margin: 0;
+    padding: 0;
+    margin-bottom: 10px;
+  }
+}
+
+@media (max-width: 600px) {
+  .timeline-title {
+    font-size: 40px;
+    font-weight: 400;
+    line-height: 40px;
+    color: #52308A;
+    margin: 0;
+    padding: 0;
+    margin-bottom: 10px;
+  }
+}
+
+.timeline-cite {
+  font-size: 18px;
+  font-weight: 300;
+  line-height: 28px;
+  color: var(--setima);
+}
+
+.timeline {
+  position: relative;
+  width: 100%;
+  margin-top: 100px;
+}
+
+.timeline-legenda {
+  position: absolute;
+  width: 200px;
+  top: -25px;
+  left: -10px;
+  font-size: 14px;
+  color: #4D4D4D;
+}
+.backpage {
+  position: relative;
+  overflow-x: auto; /* Adicione esta linha para habilitar a barra de rolagem horizontal */
+  width: 450px;
+}
+    </style>
+    <title>Timeline</title>
+</head>
+<script>
+
+    (function($) {
+    var $window = $(window);
+
+    $window.resize(function resize(){
+        if ($window.width() < 1200) {
+            function hideLeft() {
+              event.preventDefault();
+              $('.backpage').animate({
+                scrollLeft: "+=100px"
+              }, "slow");
+            }
+
+            function showLeft() {
+              event.preventDefault();
+              $('.backpage').animate({
+                scrollLeft: "-=100px"
+              }, "slow");
+            }
+            $(document).on("pageinit", "#my_view", function(){
+                $('.list-items').bind('swiperight', showLeft);
+                $('.list-items').bind('swipeleft', hideLeft);
+            });
+
+            $('.backpage').scroll(function() {
+              if($('.backpage').scrollLeft() > 10){
+                  $('#leftArrow').attr("src", "assets/img/arrows-mage.svg");
+              } else{
+                  $('#leftArrow').attr("src", "assets/img/arrows-gray.svg");
+              }
+
+              if($('.backpage').scrollLeft() > 400){
+                  $('#rightArrow').attr("src", "assets/img/arrows-gray.svg");
+              } else{
+                  $('#rightArrow').attr("src", "assets/img/arrows-mage.svg");
+              }
+            });
+
+             $('.previous').click(function() {
+              event.preventDefault();
+              $('.backpage').animate({
+                scrollLeft: "-=100px"
+              }, "slow");
+            });
+
+             $('.dots li').click(function() {
+                var href = $(this).attr('href');
+                var size = parseInt($(this).attr('data-fill'));
+                var margin = parseInt($(this).css('marginLeft'))+20;
+                var active = $('.active.actived').length;
+                if($(this).hasClass('active')){
+                    if($(".line-fill").css('width') == '120'){
+
+                    }else{
+                        $(".line-fill").animate({width: +(margin*(size))+30}, 300);
+                    }
+                } else{
+                    $(".line-fill").animate({width: "+="+(margin*(size-active))}, 300);
+                }
+                $('.dots li').removeClass('active');
+                $('.dots li').removeClass('actived');
+                 $('.dots li').removeClass('was');
+                $(this).addClass('active');
+                $(this).prevAll().addClass('active');
+                $(this).addClass('actived');
+                $(this).prevAll().addClass('actived');
+                $(this).prevAll().addClass('was');
+                $('.timeline-size').removeClass('on');
+                 $('.timeline-size').removeClass('out');
+                $(href).addClass('on');
+                $(href).prevAll().addClass('out');
+            });
+        } else{
+            $('.prox').click(function() {
+              event.preventDefault();
+              $('.backpage').animate({
+                scrollLeft: "+=100px"
+              }, "slow");
+            });
+
+            $('.backpage').scroll(function() {
+              if($('.backpage').scrollLeft() > 10){
+                  $('#leftArrow').attr("src", "assets/img/arrows-mage.svg");
+              } else{
+                  $('#leftArrow').attr("src", "assets/img/arrows-gray.svg");
+              }
+
+              if($('.backpage').scrollLeft() > 700){
+                  $('#rightArrow').attr("src", "assets/img/arrows-gray.svg");
+              } else{
+                  $('#rightArrow').attr("src", "assets/img/arrows-mage.svg");
+              }
+            });
+
+             $('.previous').click(function() {
+              event.preventDefault();
+              $('.backpage').animate({
+                scrollLeft: "-=100px"
+              }, "slow");
+            });
+
+             $('.dots li').click(function() {
+                var href = $(this).attr('href');
+                var size = parseInt($(this).attr('data-fill'));
+                var margin = parseInt($(this).css('marginLeft'))+20;
+                var active = $('.active.actived').length;
+                if($(this).hasClass('active')){
+                    if($(".line-fill").css('width') == '220'){
+
+                    }else{
+                        $(".line-fill").animate({width: +(margin*(size))+30}, 300);
+                    }
+                } else{
+                    $(".line-fill").animate({width: "+="+(margin*(size-active))}, 300);
+                }
+                $('.dots li').removeClass('active');
+                $('.dots li').removeClass('actived');
+                 $('.dots li').removeClass('was');
+                $(this).addClass('active');
+                $(this).prevAll().addClass('active');
+                $(this).addClass('actived');
+                $(this).prevAll().addClass('actived');
+                $(this).prevAll().addClass('was');
+                $('.timeline-size').removeClass('on');
+                 $('.timeline-size').removeClass('out');
+                $(href).addClass('on');
+                $(href).prevAll().addClass('out');
+            });
+        }
+
+
+    }).trigger('resize');
+})(jQuery);
+</script>
+<body>
+    <h1>Plano de Aulas</h1>
+    <form method="POST" action="/adicionar_plano">
+        <label for="nome_aluno">Nome do Aluno:</label>
+        <input type="text" id="nome_aluno" name="nome_aluno" required><br><br>
+
+        <label for="lingua_estudada">Língua Estudada:</label>
+        <input type="text" id="lingua_estudada" name="lingua_estudada" required><br><br>
+
+        <label for="data_aula">Data da Aula:</label>
+        <input type="date" id="data_aula" name="data_aula" required><br><br>
+
+        <label for="duracao_aula">Duração da Aula (em horas):</label>
+        <input type="number" id="duracao_aula" name="duracao_aula" step="0.1" required><br><br>
+
+        <label for="palavras_aprendidas">Palavras Aprendidas:</label>
+        <input type="number" id="palavras_aprendidas" name="palavras_aprendidas" required><br><br>
+
+        <button type="submit">Adicionar Plano</button>
+    </form>
+
+<div class="timeline margin-top--xxl margin-bottom--xxl">
+    <div class="d-flex d-xl-flex justify-content-center justify-content-xl-center timeline-background">
+        <div class="backpage" id="backpage">
+            <section class="list-items">
+                <div class="line-gray"></div>
+                <div class="line-fill"></div>
+                {% for plano in planos_aula %}
+                <ul class="dots">
+                    {% if loop.index is even %}
+                    <li class="active actived" href="#content{{ loop.index }}" data-fill="1">
+                        <span class="timeline-legenda">{{ plano.data_aula }}</span>
+                        <div class="timeline-info" style="font-size: 10px;">
+                            <h4 style="font-size: 10px;">{{ plano.nome_aluno }}</h4>
+                            <p>Língua Estudada: {{ plano.lingua_estudada }}</p>
+                            <p>Progresso: {{ plano.duracao_aula }} horas - {{ plano.palavras_aprendidas }} palavras</p>
+                        </div>
+                        <a class="item" href="#"></a>
+                    </li>
+                    {% else %}
+                    <li class="active actived" href="{{ loop.index }}" data-fill="1">
+                        <a class="item" href="#"></a>
+                        <span class="timeline-legenda">{{ plano.data_aula }}</span>
+                        <a class="item" href="#"></a>
+                        <div class="timeline-info" style="font-size: 10px;">
+                            <h4 style="font-size: 10px;">{{ plano.nome_aluno }}</h4>
+                            <p>Língua Estudada: {{ plano.lingua_estudada }}</p>
+                            <p>Progresso: {{ plano.duracao_aula }} horas - {{ plano.palavras_aprendidas }} palavras</p>
+                        </div>
+                    </li>
+                    {% endif %}
+                </ul>
+                {% endfor %}
+            </section>
+        </div>
+    </div>
+</div>
+
+
+
+</body>
+</html>
